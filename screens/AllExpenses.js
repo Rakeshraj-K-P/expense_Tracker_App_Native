@@ -1,8 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput';
 
+import { useSelector } from 'react-redux';
+
 const AllExpenses = () => {
-  return <ExpensesOutput expensesPeriod="Total" />;
+  const expenses = useSelector((state) => state.expenses.dummyExpenses);
+  return <ExpensesOutput expenses={expenses} expensesPeriod="Total" />;
 };
 
 export default AllExpenses;

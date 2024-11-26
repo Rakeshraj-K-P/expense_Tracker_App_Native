@@ -64,14 +64,23 @@ const initialState = {
     },
   ],
 };
-
 const expensesSlice = createSlice({
   name: 'expenses',
   initialState,
   reducers: {
-    addExpenses: () => {},
-    deleteExpenses: () => {},
-    updateExpenses: () => {},
+    addExpenses: (state, action) => {
+      state.dummyExpenses.push(action.payload)
+    },
+    deleteExpenses: (state, action) => {
+      state.dummyExpenses = state.dummyExpenses.filter(expense => expense.id !== action.payload)
+    },
+    updateExpenses: (state, action) => {
+      const {id, updateExpenses} = action.payload;
+      const index = state.dummyExpenses.findIndex(expense => expense.id === id)
+      if(index !== -1){
+        state.dummyExpenses[index] = {...state.dummyExpenses[index], ...updateExpenses}
+      }
+    },
   },
 });
 

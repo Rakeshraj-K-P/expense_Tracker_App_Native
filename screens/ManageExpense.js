@@ -3,8 +3,15 @@ import React, { useLayoutEffect } from 'react';
 import IconButton from '../UI/IconButton';
 import { GlobalStyles } from '../constants/styles';
 import Button from '../UI/Button';
+import { useDispatch } from 'react-redux';
+import {
+  addExpenses,
+  deleteExpenses,
+  updateExpenses,
+} from '../store/redux/slices/expensesSlice';
 
 const ManageExpense = ({ route, navigation }) => {
+  const dispatch = useDispatch();
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
@@ -15,6 +22,7 @@ const ManageExpense = ({ route, navigation }) => {
   }, [navigation, isEditing]);
 
   function deleteExpenseHandler() {
+    dispatch(deleteExpenses(editedExpenseId));
     navigation.goBack();
   }
 
@@ -23,6 +31,27 @@ const ManageExpense = ({ route, navigation }) => {
   }
 
   function confirmHandler() {
+    if (isEditing) {
+      dispatch(
+        updateExpenses({
+          id: editedExpenseId,
+          updateExpenses: {
+            description: 'Updated description',
+            amount: 99.99,
+            date: 'dummy',
+          },
+        })
+      );
+    } else {
+      dispatch(
+        addExpenses({
+          id: `e${Math.random().toString(36).substr(2, 9)}`,
+          description: 'New Expense',
+          amount: 50.0,
+          date: 'dummy',
+        })
+      );
+    }
     navigation.goBack();
   }
 
